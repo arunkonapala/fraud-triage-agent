@@ -89,6 +89,20 @@ runs offline. 14 tests, <1s.
   triggered escalation *and* the model's cited evidence, so an analyst can
   reconstruct the decision.
 
+## Observability
+
+The pipeline is instrumented with [agentobs](https://github.com/arunkonapala/agent-observability)
+(OpenTelemetry): one span per triage turn, LLM call, and ledger tool call,
+with token usage and USD cost on every model request.
+
+```bash
+pip install "agentobs[langchain] @ git+https://github.com/arunkonapala/agent-observability"
+AGENTOBS_EXPORTER=otlp python demo.py   # view in Jaeger at :16686
+```
+
+Auto-cleared transactions show as single-span traces (no LLM cost) —
+the escalation gate is visible directly in the trace data.
+
 ## Tech stack
 
 LangGraph · langchain-anthropic (Claude Opus 4.8) · FastAPI · Pydantic v2 · pytest

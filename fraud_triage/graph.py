@@ -153,15 +153,20 @@ def build_graph(llm=None):
     return graph.compile()
 
 
-def triage(txn: Transaction, graph=None) -> dict:
-    """Run one transaction through the pipeline and return a flat summary."""
+def triage(txn: Transaction, graph=None, callbacks=None) -> dict:
+    """Run one transaction through the pipeline and return a flat summary.
+
+    `callbacks` (e.g. agentobs' OTelCallbackHandler) propagate to every
+    LLM and tool invocation inside the graph.
+    """
     if graph is None:
         graph = build_graph()
+    config = {"callbacks": callbacks} if callbacks else None
     state = graph.invoke({
         "transaction": txn.model_dump(),
         "rule_result": None, "messages": [], "verdict": None,
         "escalated_to_llm": False, "human_review_queued": False,
-    })
+    }, config=config)
     return {
         "txn_id": txn.txn_id,
         "rule_flags": state["rule_result"]["flags"],
