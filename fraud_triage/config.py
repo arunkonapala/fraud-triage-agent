@@ -2,9 +2,16 @@
 
 import os
 
-# Claude model used for the investigation and verdict nodes.
+# Provider for the investigation and verdict nodes: "anthropic" or "groq".
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "anthropic").lower()
+
+_DEFAULT_MODELS = {
+    "anthropic": "claude-opus-4-8",
+    "groq": "llama-3.3-70b-versatile",
+}
+
 # Opus 4.8 rejects temperature/top_p/top_k with a 400 — never set them.
-MODEL = os.getenv("FRAUD_TRIAGE_MODEL", "claude-opus-4-8")
+MODEL = os.getenv("FRAUD_TRIAGE_MODEL", _DEFAULT_MODELS.get(LLM_PROVIDER, "claude-opus-4-8"))
 MAX_TOKENS = int(os.getenv("FRAUD_TRIAGE_MAX_TOKENS", "4096"))
 
 # Transactions scoring below this on the deterministic rules engine are

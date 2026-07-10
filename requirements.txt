@@ -1,5 +1,6 @@
 langgraph>=0.4
 langchain-anthropic>=0.3.15
+langchain-groq>=0.2
 langchain-core>=0.3.60
 fastapi>=0.115
 uvicorn>=0.34

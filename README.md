@@ -49,6 +49,11 @@ pytest tests/ -v
 cp .env.example .env   # add your ANTHROPIC_API_KEY
 python demo.py
 
+# or run on Groq (free tier) instead of Anthropic:
+# set LLM_PROVIDER=groq and GROQ_API_KEY in .env — defaults to llama-3.3-70b-versatile.
+# Claude gives noticeably stronger investigations and SAR narratives; the
+# rules engine and routing are deterministic and provider-independent.
+
 # API server
 uvicorn fraud_triage.api:app --reload
 # POST /triage with a transaction JSON, GET /health

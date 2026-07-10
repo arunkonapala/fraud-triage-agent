@@ -58,6 +58,11 @@ class TriageState(TypedDict):
 
 
 def _build_llm():
+    if config.LLM_PROVIDER == "groq":
+        from langchain_groq import ChatGroq
+
+        return ChatGroq(model=config.MODEL, max_tokens=config.MAX_TOKENS)
+
     from langchain_anthropic import ChatAnthropic
 
     # No temperature/top_p: Opus 4.8 rejects sampling params with a 400.

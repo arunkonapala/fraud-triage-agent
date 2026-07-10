@@ -23,7 +23,7 @@ def get_graph():
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "model": config.MODEL}
+    return {"status": "ok", "provider": config.LLM_PROVIDER, "model": config.MODEL}
 
 
 @app.post("/triage", response_model=TriageResponse)
